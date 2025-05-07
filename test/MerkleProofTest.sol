@@ -52,17 +52,16 @@ contract MerkleProofTest is Test {
 
     function testMultiProofVerify() public view {
         /**
-        * 多重默克尔证明需要：
-        * 1. leaves 数组
-        * 2. proof 数组：多重合并时尚未出现的兄弟节点
-        * 3. proofFlags：标记是“从 leaves/生成的 hashes 中取”还是“从 proof 中取” 
-        *
-        * 本例 4个叶子完全构成了整棵树，理论上并不需要额外“兄弟节点”做 proof，
-        * 因为它们两两配对就能往上“自己”合并到根。
-        * 
-        * 但为了让示例更具参考价值，这里可以手动构造一个 proof + proofFlags。
-        */
-        
+         * 多重默克尔证明需要：
+         * 1. leaves 数组
+         * 2. proof 数组：多重合并时尚未出现的兄弟节点
+         * 3. proofFlags：标记是“从 leaves/生成的 hashes 中取”还是“从 proof 中取”
+         *
+         * 本例 4个叶子完全构成了整棵树，理论上并不需要额外“兄弟节点”做 proof，
+         * 因为它们两两配对就能往上“自己”合并到根。
+         *
+         * 但为了让示例更具参考价值，这里可以手动构造一个 proof + proofFlags。
+         */
         bytes32[] memory leaves = new bytes32[](4);
         leaves[0] = leaf1;
         leaves[1] = leaf2;
@@ -82,9 +81,9 @@ contract MerkleProofTest is Test {
         //     - false 时，从 proof 中取
         //   这里因为 proof 为空，所以全是从 leaves/hashes 里取 => 全是true
         bool[] memory proofFlags = new bool[](3);
-        proofFlags[0] = true;  // 第一次合并 (leaf1, leaf2) 得到 node12
-        proofFlags[1] = true;  // 第二次合并 (leaf3, leaf4) 得到 node34
-        proofFlags[2] = true;  // 第三次合并 (node12, node34) => root
+        proofFlags[0] = true; // 第一次合并 (leaf1, leaf2) 得到 node12
+        proofFlags[1] = true; // 第二次合并 (leaf3, leaf4) 得到 node34
+        proofFlags[2] = true; // 第三次合并 (node12, node34) => root
 
         bool verified = MerkleProof.multiProofVerify(proof, proofFlags, root, leaves);
         assertTrue(verified, "Multi-proof verifying all leaves should succeed");
